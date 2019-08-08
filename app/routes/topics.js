@@ -7,7 +7,8 @@ const {
     create, 
     update,
     listTopicFollowers,
-    checkTopicExist
+    checkTopicExist,
+    listQuestions
 } = require('../controllers/topics');
 
 const { secret } = require('../config');
@@ -22,6 +23,8 @@ router.get('/:id', checkTopicExist, findById);
 
 router.patch('/:id', auth, checkTopicExist, update);
 
-router.get('/:id/followers',checkTopicExist, listTopicFollowers);
+router.get('/:id/followers', checkTopicExist, listTopicFollowers);
+
+router.get('/:id/questions', checkTopicExist, listQuestions);
 
 module.exports = router;

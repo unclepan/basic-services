@@ -1,9 +1,10 @@
 const Topic = require('../models/topics');
 const User = require('../models/users');
+const Question = require('../models/questions');
 
 class TopicCtl {
     async find(ctx){
-        const { per_page = 3 } = ctx.query;
+        const { per_page = 10 } = ctx.query;
         const page = Math.max(ctx.query.page * 1, 1) - 1;
         const perPage = Math.max(per_page * 1, 1);
         ctx.body = await Topic
@@ -48,6 +49,11 @@ class TopicCtl {
     async listTopicFollowers(ctx){ //获取这个话题有那些关注者
         const users = await User.find({followingTopics: ctx.params.id});
         ctx.body = users;
+    }
+
+    async listQuestions(ctx){ // 话题的问题列表
+        const questions = await Question.find({topics: ctx.params.id});
+        ctx.body = questions;
     }
 
 }
