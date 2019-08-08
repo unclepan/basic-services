@@ -156,6 +156,33 @@ class UsersCtl {
         ctx.status = 204;
     }
 
+    async listFollowingQuestion(ctx){ // 用户关注了那些问题
+        const user = await User.findById(ctx.params.id).select('+followingQuestions').populate('followingQuestions');
+        if(!user) {
+            ctx.throw(404, '用户不存在');
+        }
+        ctx.body = user.followingQuestions;
+    }
+
+    async followQuestion(ctx){ // 关注问题
+        const me = await User.findById(ctx.state.user._id).select('+followingQuestions');
+        if(!me.followingQuestions.map(id => id.toString()).includes(ctx.params.id)){
+            me.followingQuestions.push(ctx.params.id);
+            me.save();
+        }
+        ctx.status = 204;
+    }
+
+    async unfollowQuestion(ctx){ // 取消关注问题
+        const me = await User.findById(ctx.state.user._id).select('+followingQuestions');
+        const index = me.followingQuestions.map(id => id.toString()).indexOf(ctx.params.id);
+        if(index > -1){
+            me.followingQuestions.splice(index, 1);
+            me.save();
+        }
+        ctx.status = 204;
+    }
+
     async listQuestions(ctx) { // 列出用户提出问题
         const questions = await Question.find({questioner: ctx.params.id});
         ctx.body = questions;

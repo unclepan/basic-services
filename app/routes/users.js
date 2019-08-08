@@ -17,10 +17,14 @@ const {
     listFollowingTopic,
     followTopic,
     unfollowTopic,
-    listQuestions
+    listQuestions,
+    listFollowingQuestion,
+    followQuestion,
+    unfollowQuestion
 } = require('../controllers/users');
 
 const {checkTopicExist} = require('../controllers/topics');
+const {checkQuestionExist} = require('../controllers/questions');
 
 const { secret } = require('../config');
 
@@ -64,6 +68,11 @@ router.put('/followingTopics/:id', auth, checkTopicExist, followTopic);
 
 router.delete('/followingTopics/:id', auth, checkTopicExist, unfollowTopic);
 
-router.get('/:id/questions', listQuestions);
+router.get('/:id/followQuestions', listFollowingQuestion); //用户关注问题的列表
 
+router.put('/followQuestions/:id', auth, checkQuestionExist, followQuestion);
+
+router.delete('/followQuestions/:id', auth, checkQuestionExist, unfollowQuestion);
+
+router.get('/:id/questions', listQuestions); // 用户提出问题的列表
 module.exports = router;
