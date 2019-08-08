@@ -2,15 +2,29 @@ const jsonwebtoken = require('jsonwebtoken');
 const User = require('../models/users');
 const { secret } = require('../config');
 
-
 class UsersCtl {
     async find(ctx){
-        ctx.body = await User.find();
+        const { per_page = 10 } = ctx.query;
+        const page = Math.max(ctx.query.page * 1, 1) - 1;
+        const perPage = Math.max(per_page * 1, 1);
+        ctx.body = await User
+            .find({name: new RegExp(ctx.query.q)})
+            .limit(perPage)
+            .skip(page * perPage);
     }
     async findById(ctx){
-        const { fields } = ctx.query;
+        const { fields = '' } = ctx.query;
         const selectFields = fields.split(';').filter(f => f).map(f => '+' + f).join(' ');
-        const user = await User.findById(ctx.params.id).select(selectFields); //select是mongoose语法
+        const populateStr = fields.split(';').filter(f => f).map(f => {
+            if ( f === 'employments'){
+                return 'employments.company employments.job'
+            }
+            if(f === 'educations'){
+               return 'educations.school educations.major' 
+            }
+            return f;  
+        }).join(' ');
+        const user = await User.findById(ctx.params.id).select(selectFields).populate(populateStr); //select是mongoose语法
         if(!user){
             ctx.throw(404, '用户不存在');
         }
@@ -75,10 +89,10 @@ class UsersCtl {
         ctx.body = {token};
     }
 
-    async listFollowing(ctx){
+    async listFollowing(ctx){ // 用户关注了那些人
         const user = await User.findById(ctx.params.id).select('+following').populate('following');
         if(!user) {
-            ctx.throw(404);
+            ctx.throw(404,'用户不存在');
         }
         ctx.body = user.following;
     }
@@ -109,6 +123,33 @@ class UsersCtl {
         const index = me.following.map(id => id.toString()).indexOf(ctx.params.id);
         if(index > -1){
             me.following.splice(index, 1);
+            me.save();
+        }
+        ctx.status = 204;
+    }
+
+    async listFollowingTopic(ctx){ // 用户关注了那些话题
+        const user = await User.findById(ctx.params.id).select('+followingTopics').populate('followingTopics');
+        if(!user) {
+            ctx.throw(404, '用户不存在');
+        }
+        ctx.body = user.followingTopics;
+    }
+
+    async followTopic(ctx){
+        const me = await User.findById(ctx.state.user._id).select('+followingTopics');
+        if(!me.followingTopics.map(id => id.toString()).includes(ctx.params.id)){
+            me.followingTopics.push(ctx.params.id);
+            me.save();
+        }
+        ctx.status = 204;
+    }
+
+    async unfollowTopic(ctx){
+        const me = await User.findById(ctx.state.user._id).select('+followingTopics');
+        const index = me.followingTopics.map(id => id.toString()).indexOf(ctx.params.id);
+        if(index > -1){
+            me.followingTopics.splice(index, 1);
             me.save();
         }
         ctx.status = 204;

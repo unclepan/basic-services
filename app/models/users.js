@@ -29,20 +29,26 @@ const userSchema = new Schema({
         type: String,
     },
     locations: {
-        type: [{type: String}], // 字符串数组
+        type: [{
+            type: Schema.Types.ObjectId,
+            ref: 'Topic'
+        }], // 字符串数组
         select: false
     },
     business: {
-        type: String,
+        type: Schema.Types.ObjectId,
+        ref: 'Topic',
         select: false
     },
     employments: {
         type: [{
             company: {
-                type: String
+                type: Schema.Types.ObjectId,
+                ref: 'Topic'
             },
             job: {
-                type: String
+                type: Schema.Types.ObjectId,
+                ref: 'Topic'
             }
         }],
         select: false
@@ -50,10 +56,12 @@ const userSchema = new Schema({
     educations: {
         type: [{
             school: {
-                type: String
+                type: Schema.Types.ObjectId,
+                ref: 'Topic'
             },
             major: {
-                type: String
+                type: Schema.Types.ObjectId,
+                ref: 'Topic'
             },
             diploma: {
                 type: Number,
@@ -72,6 +80,13 @@ const userSchema = new Schema({
         type:[{
             type: Schema.Types.ObjectId,
             ref: 'User'
+        }],
+        select: false
+    },
+    followingTopics: { // 话题列表，关注了那些话题
+        type:[{
+            type: Schema.Types.ObjectId,
+            ref: 'Topic'
         }],
         select: false
     }
