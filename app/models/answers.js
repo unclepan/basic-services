@@ -26,6 +26,6 @@ const answerSchema = new Schema({
 		required: true,
 		default: 0
 	}
-});
+}, { timestamps: true });
 
 module.exports = model('Answer', answerSchema); 
