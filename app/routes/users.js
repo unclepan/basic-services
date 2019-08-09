@@ -20,11 +20,21 @@ const {
     listQuestions,
     listFollowingQuestion,
     followQuestion,
-    unfollowQuestion
+    unfollowQuestion,
+    listLikingAnswers,
+    likeAnswer,
+    unLikeAnswer,
+    listDisLikingAnswers,
+    disLikeAnswer,
+    unDisLikeAnswer,
+    listCollectingAnswers,
+    collectAnswer,
+    unCollectAnswer
 } = require('../controllers/users');
 
 const {checkTopicExist} = require('../controllers/topics');
 const {checkQuestionExist} = require('../controllers/questions');
+const {checkAnswerExist} = require('../controllers/answers');
 
 const { secret } = require('../config');
 
@@ -75,4 +85,23 @@ router.put('/followQuestions/:id', auth, checkQuestionExist, followQuestion);
 router.delete('/followQuestions/:id', auth, checkQuestionExist, unfollowQuestion);
 
 router.get('/:id/questions', listQuestions); // 用户提出问题的列表
+
+router.get('/:id/likingAnswers', listLikingAnswers);
+
+router.put('/likingAnswers/:id', auth, checkAnswerExist, likeAnswer, unDisLikeAnswer);
+
+router.delete('/likingAnswers/:id', auth, checkAnswerExist, unLikeAnswer);
+
+router.get('/:id/dislikingAnswers', listDisLikingAnswers);
+
+router.put('/dislikingAnswers/:id', auth, checkAnswerExist, disLikeAnswer, unLikeAnswer);
+
+router.delete('/dislikingAnswers/:id', auth, checkAnswerExist, unDisLikeAnswer);
+
+router.get('/:id/collectingAnswers', listCollectingAnswers);
+
+router.put('/collectingAnswers/:id', auth, checkAnswerExist, collectAnswer);
+
+router.delete('/collectingAnswers/:id', auth, checkAnswerExist, unCollectAnswer);
+
 module.exports = router;

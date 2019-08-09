@@ -96,8 +96,28 @@ const userSchema = new Schema({
             ref: 'Question'
         }],
         select: false
+    },
+    likingAnswers: { // 赞过的答案
+        type:[{
+            type: Schema.Types.ObjectId,
+            ref: 'Answer'
+        }],
+        select: false
+    },
+    dislikingAnswers: { // 踩过的答案
+        type:[{
+            type: Schema.Types.ObjectId,
+            ref: 'Answer'
+        }],
+        select: false
+    },
+    collectingAnswers: { // 收藏的答案
+        type:[{
+            type: Schema.Types.ObjectId,
+            ref: 'Answer'
+        }],
+        select: false
     }
-
 });
 
 module.exports = model('User', userSchema); 

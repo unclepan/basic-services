@@ -2,7 +2,7 @@ const path = require('path');
 
 class HomeCtl {
     index(ctx, next) {
-        ctx.body = '这是主页'
+        ctx.body = '这是主页';
     }
     upload(ctx) {
         const file =  ctx.request.files.file;

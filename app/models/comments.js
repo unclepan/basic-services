@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const { Schema, model } = mongoose;
 
-const answerSchema = new Schema({
+const commentSchema = new Schema({
     __v: {
         type: Number,
         select: false
@@ -11,7 +11,7 @@ const answerSchema = new Schema({
         type: String,
         required: true,
     },
-    answerer: { // 回答者
+    commentator: { // 评论人
         type: Schema.Types.ObjectId,
         ref: 'User',
         required: true,
@@ -21,11 +21,17 @@ const answerSchema = new Schema({
         type: String,
         required: true,
     },
-    voteCount: {// 投票数
-        type: Number,
+    answerId: { // 属于那个答案
+        type: String,
         required: true,
-        default: 0
+    },
+    rootCommentId: { // 根评论的id，非必选，因为一级评论没有根评论id
+        type: String,
+    },
+    replyTo: { // 回复给谁
+        type: Schema.Types.ObjectId,
+        ref: 'User',
     }
 });
 
-module.exports = model('Answer', answerSchema); 
+module.exports = model('Comment', commentSchema); 
