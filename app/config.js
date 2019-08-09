@@ -1,4 +1,4 @@
 module.exports = {
-    secret: 'zhihu-jwt-secret',
-    connectionStr: 'mongodb://localhost/zhihu-test',
-}
+	secret: 'zhihu-jwt-secret',
+	connectionStr: 'mongodb://localhost/zhihu-test',
+};

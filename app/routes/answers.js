@@ -2,13 +2,13 @@ const jwt = require('koa-jwt');
 const Router = require('koa-router');
 const router = new Router({ prefix:'/questions/:questionId/answers' });
 const { 
-    find, 
-    findById, 
-    create, 
-    update,
-    checkAnswerExist,
-    checkAnswerer,
-    delete:del
+	find, 
+	findById, 
+	create, 
+	update,
+	checkAnswerExist,
+	checkAnswerer,
+	delete:del
 } = require('../controllers/answers');
 
 const { secret } = require('../config');
