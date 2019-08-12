@@ -54,7 +54,7 @@ class UsersCtl {
 	async update(ctx){
 		ctx.verifyParams({
 			name: { type:'string', required: false },
-			password: { type:'string', required: false },
+			// password: { type:'string', required: false },
 			avatar_url: { type:'string', required: false },
 			gender: { type:'string', required: false },
 			headline: { type:'string', required: false },
@@ -82,13 +82,20 @@ class UsersCtl {
 			name: { type:'string', required: true },
 			password: { type:'string', required: true }
 		});
-		const user = await User.findOne(ctx.request.body);
+		const user = await User.findOne({name: ctx.request.body.name}).select('+password');
 		if(!user){
-			ctx.throw(401,'用户名或者密码不正确');
+			ctx.throw(401,'用户名不存在');
 		}
-		const { _id, name } = user;
-		const token = jsonwebtoken.sign({_id, name}, secret, { expiresIn: '1d' });
-		ctx.body = {token};
+		try {
+			await user.comparePassword(ctx.request.body.password, user.password);
+			const { _id, name } = user;
+			const token = jsonwebtoken.sign({_id, name}, secret, { expiresIn: '1d' });
+			ctx.body = {token};
+
+		} catch (err){
+			ctx.throw(401, err);
+		}
+
 	}
 
 	async listFollowing(ctx){ // 用户关注了那些人

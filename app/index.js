@@ -12,6 +12,7 @@ const { connectionStr } = require('./config');
 
 mongoose.connect(connectionStr, { useNewUrlParser: true }, ()=>console.log('数据库连接成功'));
 mongoose.connection.on('error', console.error);
+mongoose.set('useFindAndModify', false);
 
 console.log('测试环境变量',process.env.NODE_ENV);
 

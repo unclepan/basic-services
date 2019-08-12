@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+const SALT_WORK_FACTOR = 10;
 
 const { Schema, model } = mongoose;
 
@@ -119,5 +121,33 @@ const userSchema = new Schema({
 		select: false
 	}
 }, { timestamps: true });
+
+
+userSchema.pre('save', function(next) {// 保存之前中间件
+	var user = this;
+	//加盐加密，是否更改，mongoose上的方法
+	if (!user.isModified('password')) return next();
+	bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+		if (err) return next(err);
+		bcrypt.hash(user.password, salt, function(err, hash) {
+			if (err) return next(err);
+
+			user.password = hash;
+			next();
+		});
+	});
+});
+
+
+userSchema.methods = {
+	comparePassword:(_password, password) => {
+		return new Promise((resolve, reject) => {
+			bcrypt.compare(_password, password, (err, isMatch) => {
+				if(!err) resolve(isMatch);
+				else reject(err);
+			});
+		});
+	},
+};
 
 module.exports = model('User', userSchema); 
