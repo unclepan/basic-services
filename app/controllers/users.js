@@ -87,10 +87,15 @@ class UsersCtl {
 			ctx.throw(401,'用户名不存在');
 		}
 		try {
-			await user.comparePassword(ctx.request.body.password, user.password);
-			const { _id, name } = user;
-			const token = jsonwebtoken.sign({_id, name}, secret, { expiresIn: '1d' });
-			ctx.body = {token};
+			const r = await user.comparePassword(ctx.request.body.password, user.password);
+			console.log(r);
+			if(r){
+				const { _id, name } = user;
+				const token = jsonwebtoken.sign({_id, name}, secret, { expiresIn: '1d' });
+				ctx.body = {token};
+			} else {
+				ctx.throw(401, '密码错误');
+			}
 
 		} catch (err){
 			ctx.throw(401, err);
