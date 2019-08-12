@@ -13,6 +13,8 @@ const { connectionStr } = require('./config');
 mongoose.connect(connectionStr, { useNewUrlParser: true }, ()=>console.log('数据库连接成功'));
 mongoose.connection.on('error', console.error);
 
+console.log('测试环境变量',process.env.NODE_ENV);
+
 app.use(koaStatic(path.join(__dirname, 'public')));
 
 app.use(error({ // 错误处理
