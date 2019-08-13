@@ -54,7 +54,7 @@ class UsersCtl {
 	async update(ctx){
 		ctx.verifyParams({
 			name: { type:'string', required: false },
-			// password: { type:'string', required: false },
+			password: { type:'string', required: false },
 			avatar_url: { type:'string', required: false },
 			gender: { type:'string', required: false },
 			headline: { type:'string', required: false },
@@ -63,6 +63,12 @@ class UsersCtl {
 			employments: { type:'array', itemType: 'object', required: false },
 			educations: { type:'array', itemType: 'object',rule: { school:'string', major:'string', diploma:'number', entrance_year:'number', graduation_year:'number' }, required: false },
 		});
+		if(ctx.request.body.password){ // 密码加密单独处理
+			const user = await User.findById(ctx.params.id).select('+password');
+			user.password = ctx.request.body.password;
+			delete ctx.request.body.password;
+			await user.save();
+		}
 		const user = await User.findByIdAndUpdate(ctx.params.id, ctx.request.body);
 		if(!user){
 			ctx.throw(404, '用户不存在');
@@ -87,9 +93,8 @@ class UsersCtl {
 			ctx.throw(401,'用户名不存在');
 		}
 		try {
-			const r = await user.comparePassword(ctx.request.body.password, user.password);
-			console.log(r);
-			if(r){
+			const pt = await user.comparePassword(ctx.request.body.password, user.password);
+			if(pt){
 				const { _id, name } = user;
 				const token = jsonwebtoken.sign({_id, name}, secret, { expiresIn: '1d' });
 				ctx.body = {token};
@@ -100,7 +105,6 @@ class UsersCtl {
 		} catch (err){
 			ctx.throw(401, err);
 		}
-
 	}
 
 	async listFollowing(ctx){ // 用户关注了那些人
