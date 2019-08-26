@@ -1,9 +1,9 @@
 const cp = require('child_process');
 const { resolve } = require('path');
-const Case = require('../app/models/case');
+const Case = require('./models/case');
 
 exports.trailer =  () => {
-	const script = resolve(__dirname, '../crawler/case-list');
+	const script = resolve(__dirname, './case-list');
 	const child = cp.fork(script,[]);// 派生出子进程
 	let invoked = false;
 	child.on('error', () => {

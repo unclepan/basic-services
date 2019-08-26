@@ -28,7 +28,8 @@ app.use(koaBody({
 		keepExtensions: true //保留拓展名
 	}
 }));
-// parameter(app);
+
+// parameter(app); 参数校验
 app.use(parameter(app));
 routing(app);
 
