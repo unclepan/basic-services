@@ -20,7 +20,7 @@ module.exports = (config, reply) => {
 			} else {
 				ctx.body= 'wrong';
 			}
-		} else if (ctx.method === 'POST'){
+		} else if (ctx.method === 'POST') {
 			if(sha !== signature){
 				return (ctx.body = 'Failed');
 			}

@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 const {trailer} = require('./case');
 
-const { connectionCrawlerStr } = require('../app/config');
+const { connectionCrawlerStr } = require('./config');
 
 mongoose.connect(connectionCrawlerStr, { useNewUrlParser: true }, ()=>{
 	console.log('数据库连接成功');

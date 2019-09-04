@@ -124,7 +124,6 @@ const userSchema = new Schema({
 
 
 userSchema.pre('save', function(next) {// 保存之前中间件
-	console.log('save');
 	var user = this;
 	//加盐加密，是否更改，mongoose上的方法
 	if (!user.isModified('password')) return next();
