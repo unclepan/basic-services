@@ -1,7 +1,16 @@
 const { reply } = require('../wechat/reply');
 const config = require('../config');
 const { getOAuth } =  require('../wechat/index');
+const api = require('../api/index');
 const wechatMiddle = require('../wechat-lib/middleware');
+
+// 接入微信消息中间件
+exports.sdk = async (ctx) => {
+	// 获取完整的请求URL，包括 protocol，host 和 url
+	const url = ctx.href;
+	const params = await api.wechat.getSignature(url);
+	await ctx.render('wechat/sdk', params);
+};
 
 // 接入微信消息中间件
 exports.hear = async (ctx, next) => {

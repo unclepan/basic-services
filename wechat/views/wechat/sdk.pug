@@ -1,0 +1,110 @@
+extends ../layout
+
+block content
+  .wxapi_container
+    .wxapi_index_container
+      ul.label_box.lbox_close.wxapi_index_list
+        li.label_item.wxapi_index_item
+          a.label_inner(href='#menu-basic') 基础接口
+        li.label_item.wxapi_index_item
+          a.label_inner(href='#menu-image') 图像接口
+        li.label_item.wxapi_index_item
+          a.label_inner(href='#menu-voice') 音频接口
+        li.label_item.wxapi_index_item
+          a.label_inner(href='#menu-smart') 智能接口
+        li.label_item.wxapi_index_item
+          a.label_inner(href='#menu-device') 设备信息接口
+        li.label_item.wxapi_index_item
+          a.label_inner(href='#menu-location') 地理位置接口
+        li.label_item.wxapi_index_item
+          a.label_inner(href='#menu-webview') 界面操作接口
+        li.label_item.wxapi_index_item
+          a.label_inner(href='#menu-scan') 微信扫一扫接口
+        li.label_item.wxapi_index_item
+          a.label_inner(href='#menu-shopping') 微信小店接口
+        li.label_item.wxapi_index_item
+          a.label_inner(href='#menu-card') 微信卡券接口
+        li.label_item.wxapi_index_item
+          a.label_inner(href='#menu-pay') 微信支付接口
+    .lbox_close.wxapi_form
+      h3#menu-basic 基础接口
+      span.desc 判断当前客户端是否支持指定JS接口
+      button.btn.btn_primary#checkJsApi checkJsApi
+      h3#menu-share 分享接口
+      span.desc 获取“分享到朋友圈”按钮点击状态及自定义分享内容接口
+      button.btn.btn_primary#onMenuShareTimeline onMenuShareTimeline
+      span.desc 获取“分享给朋友”按钮点击状态及自定义分享内容接口
+      button.btn.btn_primary#onMenuShareAppMessage onMenuShareAppMessage
+      span.desc 获取“分享到QQ”按钮点击状态及自定义分享内容接口
+      button.btn.btn_primary#onMenuShareQQ onMenuShareQQ
+      span.desc 获取“分享到腾讯微博”按钮点击状态及自定义分享内容接口
+      button.btn.btn_primary#onMenuShareWeibo onMenuShareWeibo
+      span.desc 获取“分享到QZone”按钮点击状态及自定义分享内容接口
+      button.btn.btn_primary#onMenuShareQZone onMenuShareQZone
+      h3#menu-image 图像接口
+      span.desc 拍照或从手机相册中选图接口
+      button.btn.btn_primary#chooseImage chooseImage
+      span.desc 预览图片接口
+      button.btn.btn_primary#previewImage previewImage
+      span.desc 上传图片接口
+      button.btn.btn_primary#uploadImage uploadImage
+      span.desc 下载图片接口
+      button.btn.btn_primary#downloadImage downloadImage
+      h3#menu-voice 音频接口
+      span.desc 开始录音接口
+      button.btn.btn_primary#startRecord startRecord
+      span.desc 停止录音接口
+      button.btn.btn_primary#stopRecord stopRecord
+      span.desc 播放语音接口
+      button.btn.btn_primary#playVoice playVoice
+      span.desc 暂停播放接口
+      button.btn.btn_primary#pauseVoice pauseVoice
+      span.desc 停止播放接口
+      button.btn.btn_primary#stopVoice stopVoice
+      span.desc 上传语音接口
+      button.btn.btn_primary#uploadVoice uploadVoice
+      span.desc 下载语音接口
+      button.btn.btn_primary#downloadVoice downloadVoice
+      h3#menu-smart 智能接口
+      span.desc 识别音频并返回识别结果接口
+      button.btn.btn_primary#translateVoice translateVoice
+      h3#menu-device 设备信息接口
+      span.desc 获取网络状态接口
+      button.btn.btn_primary#getNetworkType getNetworkType
+      h3#menu-location 地理位置接口
+      span.desc 使用微信内置地图查看位置接口
+      button.btn.btn_primary#openLocation openLocation
+      span.desc 获取地理位置接口
+      button.btn.btn_primary#getLocation getLocation
+      h3#menu-webview 界面操作接口
+      span.desc 隐藏右上角菜单接口
+      button.btn.btn_primary#hideOptionMenu hideOptionMenu
+      span.desc 显示右上角菜单接口
+      button.btn.btn_primary#showOptionMenu showOptionMenu
+      span.desc 关闭当前网页窗口接口
+      button.btn.btn_primary#closeWindow closeWindow
+      span.desc 批量隐藏功能按钮接口
+      button.btn.btn_primary#hideMenuItems hideMenuItems
+      span.desc 批量显示功能按钮接口
+      button.btn.btn_primary#showMenuItems showMenuItems
+      span.desc 隐藏所有非基础按钮接口
+      button.btn.btn_primary#hideAllNonBaseMenuItem hideAllNonBaseMenuItem
+      span.desc 显示所有功能按钮接口
+      button.btn.btn_primary#showAllNonBaseMenuItem showAllNonBaseMenuItem
+      h3#menu-scan 微信扫一扫
+      span.desc 调起微信扫一扫接口
+      button.btn.btn_primary#scanQRCode0 scanQRCode(微信处理结果)
+      button.btn.btn_primary#scanQRCode1 scanQRCode(直接返回结果)
+      h3#menu-shopping 微信小店接口
+      span.desc 跳转微信商品页接口
+      button.btn.btn_primary#openProductSpecificView openProductSpecificView
+      h3#menu-card 微信卡券接口
+      span.desc 批量添加卡券接口
+      button.btn.btn_primary#addCard addCard
+      span.desc 调起适用于门店的卡券列表并获取用户选择列表
+      button.btn.btn_primary#chooseCard chooseCard
+      span.desc 查看微信卡包中的卡券接口
+      button.btn.btn_primary#openCard openCard
+      h3#menu-pay 微信支付接口
+      span.desc 发起一个微信支付请求
+      button.btn.btn_primary#chooseWXPay chooseWXPay

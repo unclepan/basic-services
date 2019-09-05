@@ -1,3 +1,5 @@
+
+// JS-SDK要使用的
 const mongoose = require('mongoose');
 const { Schema, model } = mongoose;
 
@@ -12,11 +14,9 @@ TicketSchema.statics = {
 		const ticket = await this.findOne({
 			name: 'ticket'
 		});
-
 		if (ticket && ticket.ticket) {
 			// ticket.ticket = ticket.ticket;
 		}
-
 		return ticket;
 	},
 

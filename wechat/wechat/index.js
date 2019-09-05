@@ -30,5 +30,6 @@ const wechatCfg = {
 };
 
 exports.getWechat = () => new Wechat(wechatCfg.wechat);
+// 网页授权
 exports.getOAuth = () => new WechatOAuth(wechatCfg.wechat);
 

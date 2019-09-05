@@ -6,5 +6,5 @@ module.exports = {
 		appSecret: '3feddff31e20433d7268a577c3b04d11',
 		token: 'antcpcomyangpanantcpcom'
 	},
-	baseUrl: 'http://a026bbd0.ngrok.io/'
+	baseUrl: 'http://316d5356.ngrok.io/'
 };
