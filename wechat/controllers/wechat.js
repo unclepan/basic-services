@@ -4,7 +4,7 @@ const { getOAuth } =  require('../wechat/index');
 const api = require('../api/index');
 const wechatMiddle = require('../wechat-lib/middleware');
 
-// 接入微信消息中间件
+// 接入微信消js-sdk
 exports.sdk = async (ctx) => {
 	// 获取完整的请求URL，包括 protocol，host 和 url
 	const url = ctx.href;
