@@ -16,6 +16,11 @@ exports.reply = async (ctx, next) => {
 
 	let mp = require('./index');
 	let client = mp.getWechat();
+	if (message.MsgType === 'location') {
+		let reply = '';
+		reply = '地理位置' + message.Label;
+		ctx.body = reply;
+	}
 	if (message.MsgType === 'event') {
 		let reply = '';
 		if (message.Event === 'subscribe') {
@@ -352,7 +357,7 @@ exports.reply = async (ctx, next) => {
 			}
 
 			reply = '菜单创建成功，请等 5 分钟，或者先取消关注，再重新关注就可以看到新菜单';
-		} else if (content === '20') {
+		} else if (content === '20') {// 自定义菜单
 			try {
 				// let delData = await client.handle('deleteMenu');
 				let menu = {

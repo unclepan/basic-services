@@ -1,12 +1,15 @@
-const jwt = require('koa-jwt');
+// const jwt = require('koa-jwt');
 const Router = require('koa-router');
-const router = new Router({ prefix:'/users' });
-const { 
-	find, 
-	findById, 
-	create, 
-	update, 
-	delete:del, 
+const router = new Router({ prefix: '/api/users' });
+const { Auth } = require('../middlewares/auth');
+const {
+	find,
+	findById,
+	fundByName,
+	verify,
+	create,
+	update,
+	delete: del,
 	login,
 	checkOwner,
 	listFollowing,
@@ -32,12 +35,13 @@ const {
 	unCollectAnswer
 } = require('../controllers/users');
 
-const {checkTopicExist} = require('../controllers/topics');
-const {checkQuestionExist} = require('../controllers/questions');
-const {checkAnswerExist} = require('../controllers/answers');
+const { checkTopicExist } = require('../controllers/topics');
+const { checkQuestionExist } = require('../controllers/questions');
+const { checkAnswerExist } = require('../controllers/answers');
 
-const { secret } = require('../config');
+// const { secret } = require('../config');
 
+// 1:
 // const auth = async(ctx, next) => { // 自己编写的认证
 //     const { authorization = '' } = ctx.request.header;
 //     const token = authorization.replace('Bearer ', '');
@@ -50,17 +54,22 @@ const { secret } = require('../config');
 //     await next();
 // };
 
-const auth = jwt({ secret }); // 使用三方包的认证
+// 2:
+// const auth = jwt({ secret }); // 使用三方包的认证
 
-router.get('/', find);
+router.get('/',new Auth(8).m, find);
 
 router.post('/', create);
 
 router.get('/:id', findById);
 
-router.patch('/:id', auth, checkOwner, update);
+router.get('/fund/name', fundByName);
 
-router.delete('/:id', auth, checkOwner, del);
+router.patch('/:id', new Auth().m, checkOwner, update);
+
+router.delete('/:id', new Auth().m, checkOwner, del);
+
+router.post('/verify', verify);
 
 router.post('/login', login);
 
@@ -68,40 +77,57 @@ router.get('/:id/following', listFollowing);
 
 router.get('/:id/followins', listFollowers);
 
-router.put('/following/:id', auth, checkUserExist, follow);
+router.put('/following/:id', new Auth().m, checkUserExist, follow);
 
-router.delete('/following/:id', auth, checkUserExist, unfollow);
+router.delete('/following/:id', new Auth().m, checkUserExist, unfollow);
 
 router.get('/:id/followingTopics', listFollowingTopic);
 
-router.put('/followingTopics/:id', auth, checkTopicExist, followTopic);
+router.put('/followingTopics/:id', new Auth().m, checkTopicExist, followTopic);
 
-router.delete('/followingTopics/:id', auth, checkTopicExist, unfollowTopic);
+router.delete('/followingTopics/:id', new Auth().m, checkTopicExist, unfollowTopic);
 
-router.get('/:id/followQuestions', listFollowingQuestion); //用户关注问题的列表
+router.get('/:id/followQuestions', listFollowingQuestion); // 用户关注问题的列表
 
-router.put('/followQuestions/:id', auth, checkQuestionExist, followQuestion);
+router.put('/followQuestions/:id', new Auth().m, checkQuestionExist, followQuestion);
 
-router.delete('/followQuestions/:id', auth, checkQuestionExist, unfollowQuestion);
+router.delete(
+	'/followQuestions/:id',
+	new Auth().m,
+	checkQuestionExist,
+	unfollowQuestion
+);
 
 router.get('/:id/questions', listQuestions); // 用户提出问题的列表
 
 router.get('/:id/likingAnswers', listLikingAnswers);
 
-router.put('/likingAnswers/:id', auth, checkAnswerExist, likeAnswer, unDisLikeAnswer);
+router.put(
+	'/likingAnswers/:id',
+	new Auth().m,
+	checkAnswerExist,
+	likeAnswer,
+	unDisLikeAnswer
+);
 
-router.delete('/likingAnswers/:id', auth, checkAnswerExist, unLikeAnswer);
+router.delete('/likingAnswers/:id', new Auth().m, checkAnswerExist, unLikeAnswer);
 
 router.get('/:id/dislikingAnswers', listDisLikingAnswers);
 
-router.put('/dislikingAnswers/:id', auth, checkAnswerExist, disLikeAnswer, unLikeAnswer);
+router.put(
+	'/dislikingAnswers/:id',
+	new Auth().m,
+	checkAnswerExist,
+	disLikeAnswer,
+	unLikeAnswer
+);
 
-router.delete('/dislikingAnswers/:id', auth, checkAnswerExist, unDisLikeAnswer);
+router.delete('/dislikingAnswers/:id', new Auth().m, checkAnswerExist, unDisLikeAnswer);
 
 router.get('/:id/collectingAnswers', listCollectingAnswers);
 
-router.put('/collectingAnswers/:id', auth, checkAnswerExist, collectAnswer);
+router.put('/collectingAnswers/:id', new Auth().m, checkAnswerExist, collectAnswer);
 
-router.delete('/collectingAnswers/:id', auth, checkAnswerExist, unCollectAnswer);
+router.delete('/collectingAnswers/:id', new Auth().m, checkAnswerExist, unCollectAnswer);
 
 module.exports = router;

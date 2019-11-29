@@ -30,9 +30,8 @@ module.exports = (config, reply) => {
 				encoding: ctx.charset
 			});
 
-			const content = await util.parseXML(data);
+			const content = await util.parseXML(data);	
 			const message = util.formatMessage(content.xml);
-
 			ctx.weixin = message;
 			await reply.apply(ctx,[ctx, next]);
 

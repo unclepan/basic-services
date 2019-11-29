@@ -1,6 +1,6 @@
 const jwt = require('koa-jwt');
 const Router = require('koa-router');
-const router = new Router({ prefix:'/questions' });
+const router = new Router({ prefix:'/api/questions' });
 const { 
 	find, 
 	findById, 
