@@ -57,7 +57,7 @@ const { checkAnswerExist } = require('../controllers/answers');
 // 2:
 // const auth = jwt({ secret }); // 使用三方包的认证
 
-router.get('/',new Auth(8).m, find);
+router.get('/', new Auth(8).m, find);
 
 router.post('/', create);
 

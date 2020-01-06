@@ -30,10 +30,14 @@ app.use(koaBody({
 	formidable: { // koa-body集成了formidable包
 		uploadDir: path.join(__dirname, '/public/uploads'),
 		keepExtensions: true //保留拓展名
-	}
+	},
+	formLimit: '10mb',
+	jsonLimit: '10mb',
+	textLimit: '10mb',
+	enableTypes: ['json', 'form', 'text']
 }));
 
-// parameter(app); 参数校验
+// 参数校验
 app.use(parameter(app));
 routing(app);
 

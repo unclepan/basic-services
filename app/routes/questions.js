@@ -1,6 +1,6 @@
-const jwt = require('koa-jwt');
 const Router = require('koa-router');
 const router = new Router({ prefix:'/api/questions' });
+const { Auth } = require('../middlewares/auth');
 const { 
 	find, 
 	findById, 
@@ -11,19 +11,15 @@ const {
 	delete:del
 } = require('../controllers/questions');
 
-const { secret } = require('../config');
-
-const auth = jwt({ secret }); // 使用三方包的认证
-
 router.get('/', find);
 
-router.post('/', auth, create);
+router.post('/', new Auth().m, create);
 
 router.get('/:id', checkQuestionExist, findById);
 
-router.patch('/:id', auth, checkQuestionExist, checkQuestioner, update);
+router.patch('/:id', new Auth().m, checkQuestionExist, checkQuestioner, update);
 
-router.delete('/:id', auth, checkQuestionExist, checkQuestioner, del);
+router.delete('/:id', new Auth().m, checkQuestionExist, checkQuestioner, del);
 
 
 module.exports = router;

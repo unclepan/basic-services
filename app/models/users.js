@@ -41,7 +41,7 @@ const userSchema = new Schema(
 		headline: {
 			type: String
 		},
-		locations: {
+		locations: { // 住址
 			type: [
 				{
 					type: Schema.Types.ObjectId,
@@ -50,12 +50,12 @@ const userSchema = new Schema(
 			], // 字符串数组
 			select: false
 		},
-		business: {
+		business: {  // 工作
 			type: Schema.Types.ObjectId,
 			ref: 'Topic',
 			select: false
 		},
-		employments: {
+		employments: { // 行业
 			type: [
 				{
 					company: {
@@ -70,7 +70,7 @@ const userSchema = new Schema(
 			],
 			select: false
 		},
-		educations: {
+		educations: { // 教育
 			type: [
 				{
 					school: {
@@ -103,7 +103,7 @@ const userSchema = new Schema(
 					ref: 'User'
 				}
 			],
-			select: false
+			select: false // 隐藏，查询的时候不显示
 		},
 		followingTopics: {
 			// 话题列表，关注了那些话题

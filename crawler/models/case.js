@@ -7,15 +7,15 @@ const caseSchema = new Schema({
 		type: Number,
 		select: false
 	},
+	link:{ // 原始页面链接
+		type: String,
+		required: true,
+	},
 	caseId: { // 原始id
 		type: String,
 		required: true,
 	},
 	title: { // 标题
-		type: String,
-		required: true,
-	},
-	score: { // 评分
 		type: String,
 		required: true,
 	},
@@ -25,8 +25,13 @@ const caseSchema = new Schema({
 	},
 	imgUrl: { // 头图
 		type: String,
-		required: true,
-	}
+	},
+	author: { //作者
+		type: String,
+	},
+	content:{ //正文
+		type: String,
+	},
 }, { timestamps: true });
 
 module.exports = model('Case', caseSchema); 

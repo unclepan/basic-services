@@ -224,7 +224,7 @@ class UsersCtl {
 	async listFollowing(ctx) {
 		// 用户关注了那些人
 		const user = await User.findById(ctx.params.id)
-			.select('+following')
+			.select('+following') // 增加查询 following  字段
 			.populate('following');
 		if (!user) {
 			ctx.throw(404, '用户不存在');

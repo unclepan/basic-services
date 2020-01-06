@@ -26,7 +26,7 @@ class Auth {
 	}
 	static verifyToken(token) {
 		try {
-			jwt.verify(token, global.config.security.secretKey);
+			jwt.verify(token, secret);
 			return true;
 		} catch(e) {
 			return false;
