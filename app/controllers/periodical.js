@@ -19,6 +19,9 @@ class PeriodicalCtl {
 		await next();
 	}
 	async findById(ctx) {
+		// pv统计
+		await Periodical.findByIdAndUpdate(ctx.params.id, { $inc: { pv: 1 } });
+
 		const { fields = '' } = ctx.query;
 		const selectFields = fields
 			.split(';')

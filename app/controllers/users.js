@@ -4,6 +4,7 @@ const Redis = require('koa-redis');
 const User = require('../models/users');
 const Question = require('../models/questions');
 const Answer = require('../models/answers');
+const Periodical = require('../models/periodical');
 const Token = require('../models/token');
 const { Auth } = require('../middlewares/auth');
 const { secret, smtp } = require('../config');
@@ -478,6 +479,46 @@ class UsersCtl {
 			me.save();
 		}
 		ctx.status = 204;
+	}
+
+
+	async likePeriodical(ctx, next) {
+		// 赞期刊
+		const me = await User.findById(ctx.state.user._id).select('+likingPeriodicals');
+		if (!me.likingPeriodicals.map((id) => id.toString()).includes(ctx.params.id)) {
+			me.likingPeriodicals.push(ctx.params.id);
+			me.save();
+			await Periodical.findByIdAndUpdate(ctx.params.id, { $inc: { voteCount: 1 } });
+		}
+		ctx.status = 204;
+		await next();
+	}
+
+	async unLikePeriodical(ctx) {
+		// 取消赞期刊
+		const me = await User.findById(ctx.state.user._id).select('+likingPeriodicals');
+		const index = me.likingPeriodicals
+			.map((id) => id.toString())
+			.indexOf(ctx.params.id);
+		if (index > -1) {
+			me.likingPeriodicals.splice(index, 1);
+			me.save();
+			await Periodical.findByIdAndUpdate(ctx.params.id, { $inc: { voteCount: -1 } });
+		}
+		ctx.status = 204;
+	}
+
+	async whetherLikePeriodical(ctx) {
+		// 是否赞过该期刊
+		const me = await User.findById(ctx.state.user._id).select('+likingPeriodicals');
+		const index = me.likingPeriodicals
+			.map((id) => id.toString())
+			.indexOf(ctx.params.id);
+		if (index > -1) {
+			ctx.body = { like: true };
+		} else {
+			ctx.body = { like: false };
+		}
 	}
 }
 module.exports = new UsersCtl();

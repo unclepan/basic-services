@@ -33,6 +33,7 @@ const periodicalSchema = new Schema(
 		},
 		pv: {
 			type: Number,
+			required: true,
 			default: 0
 		},
 		topics: {
@@ -43,6 +44,12 @@ const periodicalSchema = new Schema(
 				}
 			],
 			select: false
+		},
+		voteCount: {
+			// 投票数
+			type: Number,
+			required: true,
+			default: 0
 		}
 	},
 	{ timestamps: true }

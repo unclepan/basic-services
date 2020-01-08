@@ -33,12 +33,16 @@ const {
 	unDisLikeAnswer,
 	listCollectingAnswers,
 	collectAnswer,
-	unCollectAnswer
+	unCollectAnswer,
+	likePeriodical,
+	unLikePeriodical,
+	whetherLikePeriodical
 } = require('../controllers/users');
 
 const { checkTopicExist } = require('../controllers/topics');
 const { checkQuestionExist } = require('../controllers/questions');
 const { checkAnswerExist } = require('../controllers/answers');
+const { checkPeriodicalExist } = require('../controllers/periodical');
 
 // const { secret } = require('../config');
 
@@ -132,5 +136,17 @@ router.get('/:id/collectingAnswers', listCollectingAnswers);
 router.put('/collectingAnswers/:id', new Auth().m, checkAnswerExist, collectAnswer);
 
 router.delete('/collectingAnswers/:id', new Auth().m, checkAnswerExist, unCollectAnswer);
+
+// 赞期刊
+router.put(
+	'/likingPeriodical/:id',
+	new Auth().m,
+	checkPeriodicalExist,
+	likePeriodical,
+);
+// 取消赞期刊
+router.delete('/likingPeriodical/:id', new Auth().m, checkPeriodicalExist, unLikePeriodical);
+// 是否赞过该期刊
+router.get('/whetherLikingPeriodical/:id', new Auth().m, checkPeriodicalExist, whetherLikePeriodical);
 
 module.exports = router;

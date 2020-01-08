@@ -154,7 +154,17 @@ const userSchema = new Schema(
 				}
 			],
 			select: false
-		}
+		},
+		likingPeriodicals: {
+			// 赞过的期刊
+			type: [
+				{
+					type: Schema.Types.ObjectId,
+					ref: 'Periodical'
+				}
+			],
+			select: false
+		},
 	},
 	{ timestamps: true }
 );
