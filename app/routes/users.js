@@ -11,6 +11,7 @@ const {
 	update,
 	delete: del,
 	login,
+	logout,
 	checkOwner,
 	listFollowing,
 	listFollowers,
@@ -72,6 +73,8 @@ router.delete('/:id', new Auth().m, checkOwner, del);
 router.post('/verify', verify);
 
 router.post('/login', login);
+
+router.post('/logout', logout);
 
 router.get('/:id/following', listFollowing);
 

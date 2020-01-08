@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const Token = require('../models/token');
 const { secret } = require('../config');
 
 class Auth {
@@ -12,14 +13,23 @@ class Auth {
 		return  async(ctx, next) => { // 自己编写的认证
 			const { authorization = '' } = ctx.request.header;
 			const token = authorization.replace('Bearer ', '');
-			try {
-				const user = jwt.verify(token, secret);
-				if (user.scope < this.level) {
-					ctx.throw(403, '权限不足');
+			const tm = await Token.findOne({token});
+			if (tm) {
+				try {
+					const user = jwt.verify(token, secret);
+					if (user.scope < this.level) {
+						ctx.throw(403, '权限不足');
+					}
+					ctx.state.user = user; // 通常放一些用户信息
+				} catch (err) {
+					// 401 未认证（err.name 等于 'TokenExpiredError' 是token已过期）
+					if (err.name === 'TokenExpiredError') {
+						await Token.findByIdAndRemove(tm._id);
+					}
+					ctx.throw(401, '用户未通过验证');
 				}
-				ctx.state.user = user; // 通常放一些用户信息
-			} catch (err) {
-				ctx.throw(401, err.message); // 401 未认证（err.name 等于 'TokenExpiredError' 是token已过期）
+			} else {
+				ctx.throw(401, '当前用户登陆不合法');
 			}
 			await next();
 		};

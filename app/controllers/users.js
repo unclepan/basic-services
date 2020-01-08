@@ -4,6 +4,7 @@ const Redis = require('koa-redis');
 const User = require('../models/users');
 const Question = require('../models/questions');
 const Answer = require('../models/answers');
+const Token = require('../models/token');
 const { Auth } = require('../middlewares/auth');
 const { secret, smtp } = require('../config');
 const Store = new Redis().client;
@@ -210,8 +211,13 @@ class UsersCtl {
 			if (pt) {
 				const { _id, name } = user;
 				const token = jsonwebtoken.sign({ _id, name ,scope: Auth.USER }, secret, {
-					expiresIn: 1000*60
+					expiresIn: 1000 * 60
 				});
+
+				await new Token({ // 登陆成功后存入数据库
+					token,
+				}).save();
+
 				ctx.body = { token };
 			} else {
 				ctx.throw(401, '密码错误');
@@ -219,6 +225,12 @@ class UsersCtl {
 		} catch (err) {
 			ctx.throw(401, err);
 		}
+	}
+	async logout(ctx){
+		const { authorization = '' } = ctx.request.header;
+		const token = authorization.replace('Bearer ', '');
+		await Token.findOneAndRemove({token});
+		ctx.status = 204;
 	}
 
 	async listFollowing(ctx) {
