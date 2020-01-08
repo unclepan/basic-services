@@ -32,6 +32,11 @@ const periodicalCommentSchema = new Schema(
 			// 回复给谁
 			type: Schema.Types.ObjectId,
 			ref: 'User'
+		},
+		auditStatus: { // 审核状态
+			type: Number,
+			select: false,
+			default: 0
 		}
 	},
 	{ timestamps: true }
