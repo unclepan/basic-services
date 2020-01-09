@@ -1,4 +1,5 @@
 const Periodical = require('../models/periodical');
+const PeriodicalPopular = require('../models/periodical-popular');
 
 class PeriodicalCtl {
 	async find(ctx) {
@@ -62,8 +63,43 @@ class PeriodicalCtl {
 		await ctx.state.periodical.update(ctx.request.body);
 		ctx.body = ctx.state.periodical;
 	}
+
 	async delete(ctx) {
 		await Periodical.findByIdAndRemove(ctx.params.id);
+		ctx.status = 204;
+	}
+
+	async checkPeriodicalPopularExist(ctx, next) {
+		const periodicalPopular = await PeriodicalPopular.findById(ctx.params.id);
+		if (!periodicalPopular) {
+			ctx.throw(404, '该热门期刊不存在');
+		}
+		ctx.state.periodicalPopular = periodicalPopular;
+		await next();
+	}
+
+	async findPopular(ctx) {
+		const { per_page = 5 } = ctx.query;
+		const page = Math.max(ctx.query.page * 1, 1) - 1;
+		const perPage = Math.max(per_page * 1, 1);
+		ctx.body = await PeriodicalPopular.find()
+			.limit(perPage)
+			.skip(page * perPage)
+			.populate('periodical');
+	}
+
+	async createPopular(ctx) {
+		ctx.verifyParams({
+			periodical: { type: 'string', required: false }
+		});
+		const periodicalPopular = await new PeriodicalPopular({
+			...ctx.request.body,
+		}).save();
+		ctx.body = periodicalPopular;
+	}
+
+	async deletePopular(ctx) {
+		await PeriodicalPopular.findByIdAndRemove(ctx.params.id);
 		ctx.status = 204;
 	}
   
