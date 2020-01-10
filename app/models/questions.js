@@ -8,6 +8,9 @@ const questionSchema = new Schema(
 			type: Number,
 			select: false
 		},
+		pic: {
+			type: String
+		},
 		title: {
 			type: String,
 			required: true

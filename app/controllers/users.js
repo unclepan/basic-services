@@ -155,7 +155,7 @@ class UsersCtl {
 			password: { type: 'string', required: false },
 			avatar_url: { type: 'string', required: false },
 			gender: { type: 'string', required: false },
-			headline: { type: 'string', required: false },
+			introduce: { type: 'string', required: false },
 			locations: { type: 'array', itemType: 'string', required: false },
 			business: { type: 'string', required: false },
 			employments: { type: 'array', itemType: 'object', required: false },

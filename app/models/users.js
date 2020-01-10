@@ -29,16 +29,16 @@ const userSchema = new Schema(
 			required: true,
 			select: false // mongoose的一个语法，获取的时候不显示
 		},
-		avatar_url: {
+		avatar_url: { // 头像
 			type: String
 		},
-		gender: {
+		gender: { // 性别
 			type: String,
 			enum: ['male', 'female'], // 枚举
 			default: 'male',
 			required: true
 		},
-		headline: {
+		introduce: { // 简介
 			type: String
 		},
 		locations: { // 住址

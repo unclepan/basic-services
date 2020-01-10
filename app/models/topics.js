@@ -8,12 +8,13 @@ const topicSchema = new Schema(
 			type: Number,
 			select: false
 		},
-		name: {
+		pic: {
 			type: String,
 			required: true
 		},
-		avatar_url: {
-			type: String
+		name: {
+			type: String,
+			required: true
 		},
 		introduction: {
 			type: String,
