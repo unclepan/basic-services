@@ -1,6 +1,6 @@
 const Router = require('koa-router');
 const router = new Router({ prefix:'/api/periodical'});
-const { Auth } = require('../middlewares/auth');
+const { Auth } = require('../../middlewares/auth');
 const { 
 	find, 
 	findById, 
@@ -13,7 +13,7 @@ const {
 	checkPeriodicalPopularExist,
 	deletePopular,
 	// import: im
-} = require('../controllers/periodical');
+} = require('../../controllers/periodical/periodical');
 
 router.get('/', find);
 

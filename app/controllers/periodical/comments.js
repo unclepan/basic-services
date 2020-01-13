@@ -1,4 +1,4 @@
-const PeriodicalComment = require('../models/periodical-comments');
+const PeriodicalComment = require('../../models/periodical/comments');
 
 class PeriodicalCommentsCtl {
 	async find(ctx) {

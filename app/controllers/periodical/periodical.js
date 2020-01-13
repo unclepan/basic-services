@@ -1,5 +1,5 @@
-const Periodical = require('../models/periodical');
-const PeriodicalPopular = require('../models/periodical-popular');
+const Periodical = require('../../models/periodical');
+const PeriodicalPopular = require('../../models/periodical/popular');
 
 class PeriodicalCtl {
 	async find(ctx) {
