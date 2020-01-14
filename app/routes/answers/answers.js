@@ -1,6 +1,6 @@
 const Router = require('koa-router');
 const router = new Router({ prefix:'/api/questions/:questionId/answers' });
-const { Auth } = require('../middlewares/auth');
+const { Auth } = require('../../middlewares/auth');
 const { 
 	find, 
 	findById, 
@@ -9,7 +9,7 @@ const {
 	checkAnswerExist,
 	checkAnswerer,
 	delete:del
-} = require('../controllers/answers');
+} = require('../../controllers/answers/answers');
 
 
 router.get('/', find);

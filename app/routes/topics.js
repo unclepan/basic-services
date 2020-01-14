@@ -8,7 +8,7 @@ const {
 	update,
 	listTopicFollowers,
 	checkTopicExist,
-	listQuestions
+	listQuestions,
 } = require('../controllers/topics');
 
 router.get('/', find);

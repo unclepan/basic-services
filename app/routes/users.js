@@ -41,7 +41,7 @@ const {
 
 const { checkTopicExist } = require('../controllers/topics');
 const { checkQuestionExist } = require('../controllers/questions');
-const { checkAnswerExist } = require('../controllers/answers');
+const { checkAnswerExist } = require('../controllers/answers/answers');
 const { checkPeriodicalExist } = require('../controllers/periodical/periodical');
 
 // const { secret } = require('../config');

@@ -1,4 +1,4 @@
-const Topic = require('../models/topics');
+const Topic = require('../models/topics/topics');
 const User = require('../models/users');
 const Question = require('../models/questions');
 
@@ -31,7 +31,7 @@ class TopicCtl {
 	async create(ctx) {
 		ctx.verifyParams({
 			name: { type: 'string', required: true },
-			avatar_url: { type: 'string', required: false },
+			pic: { type: 'string', required: true },
 			introduction: { type: 'string', required: false }
 		});
 		const topic = await new Topic(ctx.request.body).save();
@@ -40,7 +40,7 @@ class TopicCtl {
 	async update(ctx) {
 		ctx.verifyParams({
 			name: { type: 'string', required: false },
-			avatar_url: { type: 'string', required: false },
+			pic: { type: 'string', required: false },
 			introduction: { type: 'string', required: false }
 		});
 		const topic = await Topic.findByIdAndUpdate(ctx.params.id, ctx.request.body);

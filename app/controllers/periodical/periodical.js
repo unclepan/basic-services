@@ -1,4 +1,4 @@
-const Periodical = require('../../models/periodical');
+const Periodical = require('../../models/periodical/periodical');
 const PeriodicalPopular = require('../../models/periodical/popular');
 
 class PeriodicalCtl {
@@ -106,7 +106,7 @@ class PeriodicalCtl {
 	// async import(ctx){
 	// 	const arr = ctx.request.body.map(item => {
 	// 		return {
-	// 			pic: `/2019112/${item.caseId}/${item.imgUrl}`,
+	// 			pic: `/periodical/2019112/${item.caseId}/${item.imgUrl}`,
 	// 			title: item.title,
 	// 			content: item.content,
 	// 			author: item.author,
