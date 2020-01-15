@@ -1,4 +1,4 @@
-const Comment = require('../models/comments');
+const Comment = require('../../models/answers/comments');
 
 class CommentsCtl {
 	async find(ctx) {
@@ -8,11 +8,13 @@ class CommentsCtl {
 		const q = new RegExp(ctx.query.q);
 		const { questionId, answerId } = ctx.params;
 		const { rootCommentId } = ctx.query; // 可选参数放query上
+		const { auditStatus = 0 } = ctx.query; // 审核状态
 		ctx.body = await Comment.find({
 			content: q,
 			questionId,
 			answerId,
-			rootCommentId
+			rootCommentId,
+			auditStatus
 		})
 			.limit(perPage)
 			.skip(page * perPage)

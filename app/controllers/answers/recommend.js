@@ -1,5 +1,6 @@
 const RecommendAnswer = require('../../models/answers/recommend');
 const User = require('../../models/users');
+const Comment = require('../../models/answers/comments');
 
 class RecommendAnswerCtl {
 	async find(ctx) {
@@ -15,9 +16,11 @@ class RecommendAnswerCtl {
 
 		//是否赞过或者踩过，已经是否收藏过该答案
 		const me = await User.findById(ctx.state.user._id).select('likingAnswers dislikingAnswers collectingAnswers');	
-		ctx.body = await Promise.all( ra.map(async(item) => {
+		ctx.body = await Promise.all(ra.map(async(item) => {
 			return (async() => {
-				let likeNum = await User.count({ likingAnswers: item.answerId._id });
+				const likeNum = await User.count({ likingAnswers: item.answerId._id });
+				const commentNum = await Comment.count({ answerId: item.answerId._id, rootCommentId: null, auditStatus: 0 });
+
 				const isLike = !!me.likingAnswers.find(i=> i.toString() === item.answerId._id.toString());
 				const isDislike = !!me.dislikingAnswers.find(i=> i.toString() === item.answerId._id.toString());
 				const isCollect = !!me.collectingAnswers.find(i=> i.toString() === item.answerId._id.toString());
@@ -32,7 +35,9 @@ class RecommendAnswerCtl {
 					isLike, 
 					isDislike, 
 					isCollect,
-					likeNum
+					likeNum,
+					commentNum,
+					showComments: false
 				};
 			})();
 		}));
