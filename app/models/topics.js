@@ -17,8 +17,23 @@ const topicSchema = new Schema(
 			required: true
 		},
 		introduction: {
+			// 简介
 			type: String,
 			select: false
+		},
+		moreInformation: {
+			type: Array,
+			select: false
+		},
+		popular: { // 是否推荐展示
+			type: Boolean,
+			select: false,
+			default: false
+		},
+		auditStatus: { // 审核状态
+			type: Number,
+			select: false,
+			default: 0
 		}
 	},
 	{ timestamps: true }

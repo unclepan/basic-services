@@ -14,12 +14,12 @@ class AnswersCtl {
 			.skip(page * perPage);
 	}
 	async checkAnswerExist(ctx, next) {
-		const answer = await Answer.findById(ctx.params.id).select('+answerer');
+		const answer = await Answer.findById(ctx.params.id).select('+answerer +questionId');
 		if (!answer) {
 			ctx.throw(404, '答案不存在');
 		}
 		// 只有删改查答案时候才检查此逻辑，赞、踩答案的时候不检查
-		if (ctx.params.questionId && answer.questionId !== ctx.params.questionId) {
+		if (ctx.params.questionId && answer.questionId.toString() !== ctx.params.questionId) {
 			ctx.throw(404, '该问题下没有此答案');
 		}
 		ctx.state.answer = answer;

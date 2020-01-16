@@ -1,4 +1,5 @@
-const Question = require('../models/questions');
+const Question = require('../models/questions/questions');
+const QuestionsPopular = require('../models/questions/popular');
 
 class QuestionsCtl {
 	async find(ctx) {
@@ -65,6 +66,40 @@ class QuestionsCtl {
 	}
 	async delete(ctx) {
 		await Question.findByIdAndRemove(ctx.params.id);
+		ctx.status = 204;
+	}
+
+	async checkQuestionsPopularExist(ctx, next) {
+		const questionsPopular = await QuestionsPopular.findById(ctx.params.id);
+		if (!questionsPopular) {
+			ctx.throw(404, '该热门问题不存在');
+		}
+		ctx.state.questionsPopular = questionsPopular;
+		await next();
+	}
+
+	async findPopular(ctx) {
+		const { per_page = 5 } = ctx.query;
+		const page = Math.max(ctx.query.page * 1, 1) - 1;
+		const perPage = Math.max(per_page * 1, 1);
+		ctx.body = await QuestionsPopular.find()
+			.limit(perPage)
+			.skip(page * perPage)
+			.populate('question');
+	}
+
+	async createPopular(ctx) {
+		ctx.verifyParams({
+			question: { type: 'string', required: false }
+		});
+		const questionsPopular = await new QuestionsPopular({
+			...ctx.request.body,
+		}).save();
+		ctx.body = questionsPopular;
+	}
+
+	async deletePopular(ctx) {
+		await QuestionsPopular.findByIdAndRemove(ctx.params.id);
 		ctx.status = 204;
 	}
 }

@@ -1,13 +1,20 @@
-const Topic = require('../models/topics/topics');
+const Topic = require('../models/topics');
 const User = require('../models/users');
-const Question = require('../models/questions');
+const Question = require('../models/questions/questions');
+const Periodical = require('../models/periodical/periodical');
 
 class TopicCtl {
 	async find(ctx) {
 		const { per_page = 10 } = ctx.query;
 		const page = Math.max(ctx.query.page * 1, 1) - 1;
 		const perPage = Math.max(per_page * 1, 1);
-		ctx.body = await Topic.find({ name: new RegExp(ctx.query.q) })
+		const q = new RegExp(ctx.query.q);
+		const { auditStatus = 1, popular = false } = ctx.query;
+		ctx.body = await Topic.find({ 
+			name: q,
+			auditStatus,
+			popular
+		})
 			.limit(perPage)
 			.skip(page * perPage);
 	}
@@ -59,6 +66,12 @@ class TopicCtl {
 		// 话题的问题列表
 		const questions = await Question.find({ topics: ctx.params.id });
 		ctx.body = questions;
+	}
+
+	async listPeriodicals(ctx) {
+		// 话题下有那些期刊
+		const periodical = await Periodical.find({ topics: ctx.params.id });
+		ctx.body = periodical;
 	}
 }
 module.exports = new TopicCtl();
