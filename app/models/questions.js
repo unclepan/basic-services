@@ -16,6 +16,7 @@ const questionSchema = new Schema(
 			required: true
 		},
 		description: {
+			// 简介
 			type: String
 		},
 		questioner: {
@@ -33,6 +34,21 @@ const questionSchema = new Schema(
 				}
 			],
 			select: false
+		},
+		pv: {
+			type: Number,
+			required: true,
+			default: 0
+		},
+		popular: { // 是否要推荐展示
+			type: Boolean,
+			select: false,
+			default: false
+		},
+		auditStatus: { // 审核状态
+			type: Number,
+			select: false,
+			default: 0
 		}
 	},
 	{ timestamps: true }

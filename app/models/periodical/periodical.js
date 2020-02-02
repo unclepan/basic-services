@@ -51,6 +51,11 @@ const periodicalSchema = new Schema(
 			required: true,
 			default: 0
 		},
+		popular: { // 是否要推荐展示
+			type: Boolean,
+			select: false,
+			default: false
+		},
 		auditStatus: { // 审核状态
 			type: Number,
 			select: false,

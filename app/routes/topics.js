@@ -9,7 +9,8 @@ const {
 	listTopicFollowers,
 	checkTopicExist,
 	listQuestions,
-	listPeriodicals
+	listPeriodicals,
+	informationStatistics
 } = require('../controllers/topics');
 
 router.get('/', find);
@@ -25,5 +26,7 @@ router.get('/:id/followers', checkTopicExist, listTopicFollowers);
 router.get('/:id/questions', checkTopicExist, listQuestions);
 
 router.get('/:id/periodicals', checkTopicExist, listPeriodicals);
+
+router.get('/:id/information/statistics', new Auth().m, checkTopicExist, informationStatistics);
 
 module.exports = router;

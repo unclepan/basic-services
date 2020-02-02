@@ -1,4 +1,6 @@
 const Answer = require('../../models/answers/answers');
+const User = require('../../models/users');
+const Comment = require('../../models/answers/comments');
 
 class AnswersCtl {
 	async find(ctx) {
@@ -6,13 +8,77 @@ class AnswersCtl {
 		const page = Math.max(ctx.query.page * 1, 1) - 1;
 		const perPage = Math.max(per_page * 1, 1);
 		const q = new RegExp(ctx.query.q);
+		const { questionId } = ctx.params;
 		ctx.body = await Answer.find({
 			content: q,
-			questionId: ctx.params.questionId
+			questionId
 		})
 			.limit(perPage)
 			.skip(page * perPage);
 	}
+	async popular(ctx, next) {
+		const { per_page = 10 } = ctx.query;
+		const page = Math.max(ctx.query.page * 1, 1) - 1;
+		const perPage = Math.max(per_page * 1, 1);
+		const q = new RegExp(ctx.query.q);
+		const { auditStatus = 0 } = ctx.query; // 审核状态
+		const { popular = false } = ctx.query; // 是否推荐
+		ctx.state.answer = await Answer.find({
+			content: q,
+			auditStatus,
+			popular
+		})
+			.limit(perPage)
+			.skip(page * perPage)
+			.select('+answerer')
+			.populate('questionId answerer');
+		await next();
+	}
+
+	async info(ctx, next) {
+		const { per_page = 10 } = ctx.query;
+		const page = Math.max(ctx.query.page * 1, 1) - 1;
+		const perPage = Math.max(per_page * 1, 1);
+		const q = new RegExp(ctx.query.q);
+		const { questionId } = ctx.params;
+		ctx.state.answer  = await Answer.find({
+			content: q,
+			questionId
+		})
+			.limit(perPage)
+			.skip(page * perPage)
+			.select('+answerer')
+			.populate('questionId answerer');
+		
+		await next();
+	}
+	async assInfo(ctx,){
+		const me = await User.findById(ctx.state.user._id).select('likingAnswers dislikingAnswers collectingAnswers');
+		ctx.body = await Promise.all(ctx.state.answer.map(async(item) => {
+			return (async() => {
+				const commentNum = await Comment.count({ answerId: item._id, rootCommentId: null, auditStatus: 0 });
+				const isLike = !!me.likingAnswers.find(i=> i.toString() === item._id.toString());
+				const isDislike = !!me.dislikingAnswers.find(i=> i.toString() === item._id.toString());
+				const isCollect = !!me.collectingAnswers.find(i=> i.toString() === item._id.toString());
+				const {pic, content, answerer, questionId, voteCount} = item;
+				return {
+					id: item._id,
+					pic,
+					content,
+					answerer,
+					questionId,
+					voteCount,
+					isLike, 
+					isDislike, 
+					isCollect,
+					commentNum,
+					showComments: false
+				};
+			})();
+		}));
+
+	}
+	
 	async checkAnswerExist(ctx, next) {
 		const answer = await Answer.findById(ctx.params.id).select('+answerer +questionId');
 		if (!answer) {

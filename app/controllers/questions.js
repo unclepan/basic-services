@@ -1,5 +1,6 @@
-const Question = require('../models/questions/questions');
-const QuestionsPopular = require('../models/questions/popular');
+const Question = require('../models/questions');
+const User = require('../models/users');
+const Answer = require('../models/answers/answers');
 
 class QuestionsCtl {
 	async find(ctx) {
@@ -7,7 +8,13 @@ class QuestionsCtl {
 		const page = Math.max(ctx.query.page * 1, 1) - 1;
 		const perPage = Math.max(per_page * 1, 1);
 		const q = new RegExp(ctx.query.q);
-		ctx.body = await Question.find({ $or: [{ title: q }, { description: q }] })
+		const { auditStatus = 0 } = ctx.query; // 审核状态
+		const { popular = false } = ctx.query; // 是否推荐
+		ctx.body = await Question.find({ 
+			$or: [{ title: q }, { description: q }],
+			auditStatus,
+			popular 
+		})
 			.limit(perPage)
 			.skip(page * perPage);
 	}
@@ -22,6 +29,9 @@ class QuestionsCtl {
 		await next();
 	}
 	async findById(ctx) {
+		// pv统计
+		await Question.findByIdAndUpdate(ctx.params.id, { $inc: { pv: 1 } });
+
 		const { fields = '' } = ctx.query;
 		const selectFields = fields
 			.split(';')
@@ -68,39 +78,23 @@ class QuestionsCtl {
 		await Question.findByIdAndRemove(ctx.params.id);
 		ctx.status = 204;
 	}
-
-	async checkQuestionsPopularExist(ctx, next) {
-		const questionsPopular = await QuestionsPopular.findById(ctx.params.id);
-		if (!questionsPopular) {
-			ctx.throw(404, '该热门问题不存在');
+	async informationStatistics(ctx) {
+		// 当前用户是否关注这个问题，这个问题的关注人数，有多少个回答，问题的浏览数
+		const me = await User.findById(ctx.state.user._id).select('+followingQuestions');
+		const index = me.followingQuestions
+			.map((id) => id.toString())
+			.indexOf(ctx.params.id);
+		let followingQuestion = false;
+		if (index > -1) {
+			followingQuestion = true;
+		} else {
+			followingQuestion = false;
 		}
-		ctx.state.questionsPopular = questionsPopular;
-		await next();
-	}
 
-	async findPopular(ctx) {
-		const { per_page = 5 } = ctx.query;
-		const page = Math.max(ctx.query.page * 1, 1) - 1;
-		const perPage = Math.max(per_page * 1, 1);
-		ctx.body = await QuestionsPopular.find()
-			.limit(perPage)
-			.skip(page * perPage)
-			.populate('question');
-	}
-
-	async createPopular(ctx) {
-		ctx.verifyParams({
-			question: { type: 'string', required: false }
-		});
-		const questionsPopular = await new QuestionsPopular({
-			...ctx.request.body,
-		}).save();
-		ctx.body = questionsPopular;
-	}
-
-	async deletePopular(ctx) {
-		await QuestionsPopular.findByIdAndRemove(ctx.params.id);
-		ctx.status = 204;
+		const followingQuestionNum = await User.count({ followingQuestions: ctx.params.id });
+		const answersNum = await Answer.count({ questionId: ctx.params.id });
+		
+		ctx.body = {followingQuestion, followingQuestionNum, answersNum};
 	}
 }
 module.exports = new QuestionsCtl();

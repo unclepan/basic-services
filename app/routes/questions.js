@@ -9,10 +9,7 @@ const {
 	checkQuestionExist,
 	checkQuestioner,
 	delete:del,
-	findPopular,
-	createPopular,
-	checkQuestionsPopularExist,
-	deletePopular
+	informationStatistics
 } = require('../controllers/questions');
 
 router.get('/', find);
@@ -25,12 +22,6 @@ router.patch('/:id', new Auth().m, checkQuestionExist, checkQuestioner, update);
 
 router.delete('/:id', new Auth().m, checkQuestionExist, checkQuestioner, del);
 
-// 热门问题
-router.get('/popular/index', findPopular);
-
-router.post('/popular/index', new Auth().m, createPopular);
-
-router.delete('/popular/index/:id', new Auth().m, checkQuestionsPopularExist, deletePopular);
-
+router.get('/:id/information/statistics', new Auth().m, checkQuestionExist, informationStatistics);
 
 module.exports = router;

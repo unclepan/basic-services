@@ -1,6 +1,7 @@
 const Topic = require('../models/topics');
 const User = require('../models/users');
-const Question = require('../models/questions/questions');
+const Question = require('../models/questions');
+const Answer = require('../models/answers/answers');
 const Periodical = require('../models/periodical/periodical');
 
 class TopicCtl {
@@ -65,13 +66,45 @@ class TopicCtl {
 	async listQuestions(ctx) {
 		// 话题的问题列表
 		const questions = await Question.find({ topics: ctx.params.id });
-		ctx.body = questions;
+		ctx.body = await Promise.all(questions.map(async(item) => {
+			return (async() => {
+				const answerNum = await Answer.count({ questionId: item._id });
+				return {
+					id: item._id,
+					title: item.title,
+					pic: item.pic,
+					description: item.description,
+					createdAt: item.createdAt,
+					updatedAt: item.updatedAt,
+					answerNum
+				};
+			})();
+		}));
 	}
 
 	async listPeriodicals(ctx) {
 		// 话题下有那些期刊
 		const periodical = await Periodical.find({ topics: ctx.params.id });
 		ctx.body = periodical;
+	}
+
+	async informationStatistics(ctx) {
+		// 当前用户是否关注这个话题，这个话题的关注人数，话题下相关的问题数
+		const me = await User.findById(ctx.state.user._id).select('+followingTopics');
+		const index = me.followingTopics
+			.map((id) => id.toString())
+			.indexOf(ctx.params.id);
+		let followingTopic = false;
+		if (index > -1) {
+			followingTopic = true;
+		} else {
+			followingTopic = false;
+		}
+
+		const followingTopicNum = await User.count({ followingTopics: ctx.params.id });
+		const questionsNum = await Question.count({ topics: ctx.params.id });
+		
+		ctx.body = {followingTopic, followingTopicNum, questionsNum};
 	}
 }
 module.exports = new TopicCtl();

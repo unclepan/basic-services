@@ -25,7 +25,7 @@ const topicSchema = new Schema(
 			type: Array,
 			select: false
 		},
-		popular: { // 是否推荐展示
+		popular: { // 是否要推荐展示
 			type: Boolean,
 			select: false,
 			default: false
