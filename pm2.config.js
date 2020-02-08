@@ -28,30 +28,7 @@ module.exports = {
 			error_file: './logs/err.log', // 错误日志路径
 			merge_logs: true,
 			log_date_format: 'YYYY-MM-DD HH:mm Z',
-		},
-		{
-			name: 'blog-nuxt',
-			script: './server/index.js',
-			cwd: '../blog-nuxt', // 当前工作路径
-			watch: true,
-			ignore_watch: [
-			// 忽视这些目录的变化
-				'node_modules',
-				'logs',
-			],
-			node_args: '--harmony', // node的启动模式
-			env: {
-				NODE_ENV: 'production', // 设置运行环境，此时process.env.NODE_ENV的值就是development
-				ORIGIN_ADDR: 'https://www.antcp.com'
-			},
-			env_production: {
-				NODE_ENV: 'production',
-			},
-			out_file: './logs/out.log', // 普通日志路径
-			error_file: './logs/err.log', // 错误日志路径
-			merge_logs: true,
-			log_date_format: 'YYYY-MM-DD HH:mm Z',
-		},
+		}
 	],
 };
   
