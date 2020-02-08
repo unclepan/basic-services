@@ -18,7 +18,7 @@ module.exports = {
 			return 'qjerjwkljkaejklr@163.com';
 		},
 		get pass(){
-			return 'qweasd123';
+			return 'yangpan123456789';
 		},
 		get code(){
 			return ()=>{
