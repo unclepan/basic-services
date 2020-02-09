@@ -75,18 +75,18 @@ class PeriodicalCtl {
 		await Periodical.findByIdAndRemove(ctx.params.id);
 		ctx.status = 204;
 	}
-	// async import(ctx){
-	// 	const arr = ctx.request.body.map(item => {
-	// 		return {
-	// 			pic: `/periodical/2019112/${item.caseId}/${item.imgUrl}`,
-	// 			title: item.title,
-	// 			content: item.content,
-	// 			author: item.author,
-	// 			describe: item.describe,
-	// 		};
-	// 	});
-	// 	const periodicals = await Periodical.insertMany(arr);
-	// 	ctx.body = periodicals;
-	// }
+	async import(ctx){
+		const arr = ctx.request.body.map(item => {
+			return {
+				pic: `/periodical/2019112/${item.caseId}/${item.imgUrl}`,
+				title: item.title,
+				content: item.content,
+				author: item.author,
+				describe: item.describe,
+			};
+		});
+		const periodicals = await Periodical.insertMany(arr);
+		ctx.body = periodicals;
+	}
 }
 module.exports = new PeriodicalCtl();

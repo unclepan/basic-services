@@ -8,7 +8,7 @@ const {
 	update,
 	checkPeriodicalExist,
 	delete:del,
-	// import: im
+	import: im
 } = require('../../controllers/periodical/periodical');
 
 router.get('/', find);
@@ -21,7 +21,7 @@ router.patch('/:id', new Auth().m, checkPeriodicalExist, update);
 
 router.delete('/:id', new Auth().m, checkPeriodicalExist, del);
 
-// router.post('/import', new Auth().m, im);
+router.post('/import', new Auth().m, im);
 
 
 module.exports = router;
