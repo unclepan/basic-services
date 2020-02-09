@@ -84,6 +84,7 @@ class PeriodicalCtl {
 				content: item.content,
 				author: item.author,
 				describe: item.describe,
+				auditStatus: 1
 			};
 		});
 		const periodicals = await Periodical.insertMany(arr);
