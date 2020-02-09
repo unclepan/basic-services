@@ -6,7 +6,7 @@ class PeriodicalCtl {
 		const page = Math.max(ctx.query.page * 1, 1) - 1;
 		const perPage = Math.max(per_page * 1, 1);
 		const q = new RegExp(ctx.query.q);
-		const { auditStatus = 0 } = ctx.query; // 审核状态
+		const { auditStatus = 1 } = ctx.query; // 审核状态
 		const { popular = false } = ctx.query; // 是否推荐
 		
 		ctx.body = await Periodical.find({ 
@@ -65,7 +65,8 @@ class PeriodicalCtl {
 			content: { type: 'string', required: false },
 			author: { type: 'string', required: false },
 			describe: { type: 'string', required: false },
-			popular: { type: 'boolean', required: false } 
+			popular: { type: 'boolean', required: false },
+			auditStatus: { type: 'number', required: false } 
 		});
 		await ctx.state.periodical.update(ctx.request.body);
 		ctx.body = ctx.state.periodical;
