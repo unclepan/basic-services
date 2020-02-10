@@ -19,6 +19,7 @@ const topicSchema = new Schema(
 		introduction: {
 			// 简介
 			type: String,
+			required: true,
 			select: false
 		},
 		moreInformation: {
