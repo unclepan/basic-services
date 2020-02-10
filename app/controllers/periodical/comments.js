@@ -8,7 +8,7 @@ class PeriodicalCommentsCtl {
 		const q = new RegExp(ctx.query.q);
 		const { periodicalId } = ctx.params;
 		const { rootCommentId } = ctx.query; // 可选参数放query上
-		const { auditStatus = 0 } = ctx.query; // 审核状态
+		const { auditStatus = 1 } = ctx.query; // 审核状态
 		ctx.body = await PeriodicalComment.find({
 			content: q,
 			periodicalId,

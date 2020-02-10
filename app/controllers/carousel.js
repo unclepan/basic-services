@@ -6,7 +6,7 @@ class CarouselCtl {
 		const page = Math.max(ctx.query.page * 1, 1) - 1;
 		const perPage = Math.max(per_page * 1, 1);
 		const q = new RegExp(ctx.query.q);
-		const { auditStatus = 0 } = ctx.query; // 审核状态
+		const { auditStatus = 1 } = ctx.query; // 审核状态
 		ctx.body = await Carousel.find({
 			title: q,
 			auditStatus
