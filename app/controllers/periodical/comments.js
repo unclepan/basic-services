@@ -78,7 +78,11 @@ class PeriodicalCommentsCtl {
 			auditStatus: { type: 'number', required: false } 
 		});
 		const { content, auditStatus = 0 } = ctx.request.body; // 修改评论只允许修改评论内容，不能把二级评论变成一级评论等
-		await ctx.state.comment.update({ content, auditStatus });
+		let data = {auditStatus};
+		if(content){
+			data.content = content;
+		}
+		await ctx.state.comment.update(data);
 		ctx.body = ctx.state.comment;
 	}
 	async delete(ctx) {
