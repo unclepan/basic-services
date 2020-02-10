@@ -65,6 +65,7 @@ class PeriodicalCtl {
 			content: { type: 'string', required: false },
 			author: { type: 'string', required: false },
 			describe: { type: 'string', required: false },
+			topics: { type: 'array', required: false },
 			popular: { type: 'boolean', required: false },
 			auditStatus: { type: 'number', required: false } 
 		});
