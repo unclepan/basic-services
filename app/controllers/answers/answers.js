@@ -9,9 +9,11 @@ class AnswersCtl {
 		const perPage = Math.max(per_page * 1, 1);
 		const q = new RegExp(ctx.query.q);
 		const { questionId } = ctx.params;
+		const { auditStatus = 1 } = ctx.query; // 审核状态
 		ctx.body = await Answer.find({
 			content: q,
-			questionId
+			questionId,
+			auditStatus
 		})
 			.limit(perPage)
 			.skip(page * perPage);
@@ -41,9 +43,11 @@ class AnswersCtl {
 		const perPage = Math.max(per_page * 1, 1);
 		const q = new RegExp(ctx.query.q);
 		const { questionId } = ctx.params;
+		const { auditStatus = 1 } = ctx.query; // 审核状态
 		ctx.state.answer  = await Answer.find({
 			content: q,
-			questionId
+			questionId,
+			auditStatus
 		})
 			.limit(perPage)
 			.skip(page * perPage)
