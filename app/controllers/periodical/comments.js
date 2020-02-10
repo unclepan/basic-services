@@ -74,10 +74,11 @@ class PeriodicalCommentsCtl {
 	}
 	async update(ctx) {
 		ctx.verifyParams({
-			content: { type: 'string', required: false }
+			content: { type: 'string', required: false },
+			auditStatus: { type: 'number', required: false } 
 		});
-		const { content } = ctx.request.body; // 修改评论之允许修改评论内容，不能把二级评论变成一级评论等
-		await ctx.state.comment.update({ content });
+		const { content, auditStatus = 0 } = ctx.request.body; // 修改评论只允许修改评论内容，不能把二级评论变成一级评论等
+		await ctx.state.comment.update({ content, auditStatus });
 		ctx.body = ctx.state.comment;
 	}
 	async delete(ctx) {

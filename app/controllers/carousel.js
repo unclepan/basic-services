@@ -55,6 +55,7 @@ class CarouselCtl {
 			pic: { type: 'string', required: false },
 			title: { type: 'string', required: false },
 			link: { type: 'string', required: false },
+			auditStatus: { type: 'number', required: false } 
 		});
 		await ctx.state.carousel.update(ctx.request.body);
 		ctx.body = ctx.state.carousel;
