@@ -28,6 +28,11 @@ const carouselSchema = new Schema(
 				message: 'link格式不正确!'
 			}
 		},
+		pv: {
+			type: Number,
+			required: true,
+			default: 0
+		},
 		auditStatus: { // 审核状态
 			type: Number,
 			select: false,
