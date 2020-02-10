@@ -21,8 +21,8 @@ class AnswersCtl {
 		const page = Math.max(ctx.query.page * 1, 1) - 1;
 		const perPage = Math.max(per_page * 1, 1);
 		const q = new RegExp(ctx.query.q);
-		const { auditStatus = 0 } = ctx.query; // 审核状态
-		const { popular = false } = ctx.query; // 是否推荐
+		const { auditStatus = 1 } = ctx.query; // 审核状态
+		const { popular = true } = ctx.query; // 是否推荐
 		ctx.state.answer = await Answer.find({
 			content: q,
 			auditStatus,

@@ -8,7 +8,7 @@ class QuestionsCtl {
 		const page = Math.max(ctx.query.page * 1, 1) - 1;
 		const perPage = Math.max(per_page * 1, 1);
 		const q = new RegExp(ctx.query.q);
-		const { auditStatus = 0 } = ctx.query; // 审核状态
+		const { auditStatus = 1 } = ctx.query; // 审核状态
 		const { popular = false } = ctx.query; // 是否推荐
 		ctx.body = await Question.find({ 
 			$or: [{ title: q }, { description: q }],
@@ -50,8 +50,10 @@ class QuestionsCtl {
 	}
 	async create(ctx) {
 		ctx.verifyParams({
+			pic: { type: 'string', required: false },
 			title: { type: 'string', required: true },
-			description: { type: 'string', required: false }
+			description: { type: 'string', required: false },
+			topics: { type: 'array', required: false },
 		});
 		const question = await new Question({
 			...ctx.request.body,
@@ -68,8 +70,12 @@ class QuestionsCtl {
 	}
 	async update(ctx) {
 		ctx.verifyParams({
+			pic: { type: 'string', required: false },
 			title: { type: 'string', required: false },
-			description: { type: 'string', required: false }
+			description: { type: 'string', required: false },
+			topics: { type: 'array', required: false },
+			popular: { type: 'boolean', required: false },
+			auditStatus: { type: 'number', required: false } 
 		});
 		await ctx.state.question.update(ctx.request.body);
 		ctx.body = ctx.state.question;
