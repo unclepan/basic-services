@@ -98,7 +98,7 @@ class QuestionsCtl {
 		}
 
 		const followingQuestionNum = await User.count({ followingQuestions: ctx.params.id });
-		const answersNum = await Answer.count({ questionId: ctx.params.id });
+		const answersNum = await Answer.count({ questionId: ctx.params.id, auditStatus: 1  });
 		
 		ctx.body = {followingQuestion, followingQuestionNum, answersNum};
 	}
