@@ -68,7 +68,7 @@ class TopicCtl {
 
 	async listQuestions(ctx) {
 		// 话题的问题列表
-		const questions = await Question.find({ topics: ctx.params.id });
+		const questions = await Question.find({ topics: ctx.params.id, auditStatus: 1 });
 		ctx.body = await Promise.all(questions.map(async(item) => {
 			return (async() => {
 				const answerNum = await Answer.count({ questionId: item._id });
@@ -87,7 +87,7 @@ class TopicCtl {
 
 	async listPeriodicals(ctx) {
 		// 话题下有那些期刊
-		const periodical = await Periodical.find({ topics: ctx.params.id });
+		const periodical = await Periodical.find({ topics: ctx.params.id, auditStatus: 1 });
 		ctx.body = periodical;
 	}
 

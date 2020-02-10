@@ -134,7 +134,10 @@ class AnswersCtl {
 	}
 	async update(ctx) {
 		ctx.verifyParams({
-			content: { type: 'string', required: false }
+			pic: { type: 'string', required: false },
+			content: { type: 'string', required: false },
+			popular: { type: 'boolean', required: false },
+			auditStatus: { type: 'number', required: false } 
 		});
 		await ctx.state.answer.update(ctx.request.body);
 		ctx.body = ctx.state.answer;
