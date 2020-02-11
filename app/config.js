@@ -15,10 +15,10 @@ module.exports = {
 			return 'smtp.163.com';
 		},
 		get user(){
-			return 'qjerjwkljkaejklr@163.com';
+			return '18910788378@163.com';
 		},
 		get pass(){
-			return 'yangpan123456789';
+			return '12324dsfwekqwSFG';
 		},
 		get code(){
 			return ()=>{
