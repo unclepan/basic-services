@@ -39,7 +39,8 @@ const userSchema = new Schema(
 			required: true
 		},
 		introduce: { // 简介
-			type: String
+			type: String,
+			default: '暂无简介',
 		},
 		locations: { // 住址
 			type: [

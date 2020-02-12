@@ -70,6 +70,15 @@ router.get('/:id', findById);
 
 router.get('/fund/name', fundByName);
 
+router.get('/login/info',
+	new Auth().m, 
+	async(ctx, next) => {
+		ctx.params.id = ctx.state.user._id;
+		await next();
+	}, 
+	findById
+);
+
 router.patch('/:id', new Auth().m, checkOwner, update);
 
 router.delete('/:id', new Auth().m, checkOwner, del);
