@@ -11,7 +11,7 @@ const {
 	import: im
 } = require('../../controllers/periodical/periodical');
 
-router.get('/', new Auth().m, find);
+router.get('/', find);
 
 router.post('/', new Auth().m, create);
 
