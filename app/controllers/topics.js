@@ -71,7 +71,7 @@ class TopicCtl {
 		const questions = await Question.find({ topics: ctx.params.id, auditStatus: 1 });
 		ctx.body = await Promise.all(questions.map(async(item) => {
 			return (async() => {
-				const answerNum = await Answer.count({ questionId: item._id });
+				const answerNum = await Answer.countDocuments({ questionId: item._id });
 				return {
 					id: item._id,
 					title: item.title,
@@ -104,8 +104,8 @@ class TopicCtl {
 			followingTopic = false;
 		}
 
-		const followingTopicNum = await User.count({ followingTopics: ctx.params.id });
-		const questionsNum = await Question.count({ topics: ctx.params.id, auditStatus: 1  });
+		const followingTopicNum = await User.countDocuments({ followingTopics: ctx.params.id });
+		const questionsNum = await Question.countDocuments({ topics: ctx.params.id, auditStatus: 1  });
 		
 		ctx.body = {followingTopic, followingTopicNum, questionsNum};
 	}

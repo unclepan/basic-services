@@ -60,7 +60,7 @@ class AnswersCtl {
 		const me = await User.findById(ctx.state.user._id).select('likingAnswers dislikingAnswers collectingAnswers');
 		ctx.body = await Promise.all(ctx.state.answer.map(async(item) => {
 			return (async() => {
-				const commentNum = await Comment.count({ answerId: item._id, rootCommentId: null, auditStatus: 1 });
+				const commentNum = await Comment.countDocuments({ answerId: item._id, rootCommentId: null, auditStatus: 1 });
 				const isLike = !!me.likingAnswers.find(i=> i.toString() === item._id.toString());
 				const isDislike = !!me.dislikingAnswers.find(i=> i.toString() === item._id.toString());
 				const isCollect = !!me.collectingAnswers.find(i=> i.toString() === item._id.toString());
