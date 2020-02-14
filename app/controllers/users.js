@@ -212,7 +212,7 @@ class UsersCtl {
 			if (pt) {
 				const { _id, name } = user;
 				const token = jsonwebtoken.sign({ _id, name ,scope: Auth.USER }, secret, {
-					expiresIn: 1000 * 60
+					expiresIn: 1000 * 60 * 30
 				});
 
 				await new Token({ // 登陆成功后存入数据库
