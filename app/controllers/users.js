@@ -33,10 +33,12 @@ class UsersCtl {
 			return false;
 		}
 		const transporter = nodeMailer.createTransport({
-			service: 'smtp.163.com',
-			host: 'smtp.163.com',
-			secureConnection: true,
-			port: 465,
+			// service: 'smtp.qq.com',
+			// secureConnection: true,
+			// host: smtp.host,
+			// port: 465,
+			secure: false,
+			service: 'qq',
 			auth: {
 				user: smtp.user,
 				pass: smtp.pass

@@ -12,13 +12,13 @@ module.exports = {
 	},
 	smtp:{
 		get host(){
-			return 'smtp.163.com';
+			return 'smtp.qq.com';
 		},
 		get user(){
-			return '18910788378@163.com';
+			return '292222369@qq.com';
 		},
 		get pass(){
-			return '12324dsfwekqwSFG';
+			return 'qnnowvfnrhkncbbe';
 		},
 		get code(){
 			return ()=>{
