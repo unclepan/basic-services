@@ -86,8 +86,16 @@ class TopicCtl {
 	}
 
 	async listPeriodicals(ctx) {
+		const { per_page = 10 } = ctx.query;
+		const page = Math.max(ctx.query.page * 1, 1) - 1;
+		const perPage = Math.max(per_page * 1, 1);
 		// 话题下有那些期刊
-		const periodical = await Periodical.find({ topics: ctx.params.id, auditStatus: 1 });
+		const periodical = await Periodical.find({
+			topics: ctx.params.id, 
+			auditStatus: 1 
+		})
+			.limit(perPage)
+			.skip(page * perPage);
 		ctx.body = periodical;
 	}
 
