@@ -9,7 +9,7 @@ const bpSchema = new Schema(
 			select: false
 		},
 		bp: {
-			type: Array,
+			type: Object,
 			required: true
 		},
 	},

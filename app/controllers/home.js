@@ -1,5 +1,6 @@
 const path = require('path');
 const BP = require('../models/bp');
+const moment = require('moment');
 
 class HomeCtl {
 	index(ctx) {
@@ -7,12 +8,13 @@ class HomeCtl {
 	}
 	async bp(ctx) {
 		const {data} = ctx.request.body;
-		data.forEach(element => {	
+		let v = JSON.parse(data);
+	
+		for(let i = 0; i < v.length; i++){
 			new BP({
-				bp:element,
+				bp: {...v[i], tFom: moment(v[i].t).format('YYYY/MM/DD HH:mm:ss')},
 			}).save();
-		});
-		
+		}
 		ctx.body = { mas: '埋点测试' };
 	}
 	upload(ctx) {
