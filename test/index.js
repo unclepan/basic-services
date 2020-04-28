@@ -1,24 +1,9 @@
-const Koa = require('koa');
+const Koa = require('koa');  // 引入koa框架
+const path = require('path');
+const KoaStatic = require('koa-static');
 
 const app = new Koa();
-const PORT = 3000;
 
-// #1
-app.use(async (ctx, next)=>{
-	console.log(1);
-	await next();
-	console.log(1);
-});
-// #2
-app.use(async (ctx, next) => {
-	console.log(2);
-	await next();
-	console.log(2);
-});
+app.use(KoaStatic(path.join( __dirname, './static')));
 
-app.use(async () => {
-	console.log(3);
-});
-
-app.listen(PORT);
-console.log(`http://localhost:${PORT}`);
+app.listen(8889);
