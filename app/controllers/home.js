@@ -6,7 +6,7 @@ class HomeCtl {
 	index(ctx) {
 		ctx.body = '这是主页';
 	}
-	async bp(ctx) {
+	async bpCreate(ctx) {
 		const {data} = ctx.request.body;
 		let v = JSON.parse(data);
 	
@@ -16,6 +16,9 @@ class HomeCtl {
 			}).save();
 		}
 		ctx.body = { mas: '埋点测试' };
+	}
+	async bpFind(ctx) {
+		ctx.body = await BP.find();
 	}
 	upload(ctx) {
 		const file = ctx.request.files.file;
