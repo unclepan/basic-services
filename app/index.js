@@ -11,6 +11,7 @@ const path = require('path');
 const routing = require('./routes');
 const { connectionStr } = require('./config');
 const app = new Koa();
+
 // 跨域
 app.use(cors());
 

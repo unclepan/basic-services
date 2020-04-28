@@ -1,6 +1,6 @@
 module.exports = {
 	secret: 'antcp-jwt-secret',
-	connectionStr: 'mongodb://localhost:27017/antcp',
+	connectionStr: 'mongodb://pan:Yp654321@localhost:27017/antcp?authSource=antcp',
 	connectionCrawlerStr: 'mongodb://localhost:27017/crawler',// 爬虫数据库
 	redis:{
 		get host(){
