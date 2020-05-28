@@ -76,7 +76,7 @@ module.exports = {
 			error_file: './logs/err.log', // 错误日志路径
 			merge_logs: true,
 			log_date_format: 'YYYY-MM-DD HH:mm Z',
-		}
+		},
 	],
 };
   
