@@ -44,4 +44,4 @@ app.use(koaBody({
 app.use(parameter(app));
 routing(app);
 
-app.listen(3001,()=> console.log('程序启动成功在3001端口'));
+app.listen(3001, ()=> console.log('程序启动成功在3001端口'));
